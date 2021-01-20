@@ -10,6 +10,10 @@ import Grid from "@material-ui/core/Grid";
 import Spinner from "../util/spinner/spinner";
 import SwipeableImages from "./SwipeableImages";
 
+//edit Restaurant info
+import MyButton from "../util/MyButton";
+import EditIcon from "@material-ui/icons/Edit";
+
 const useStyles = makeStyles({
   borderBottom: {
     borderBottom: "2px solid #000",
@@ -34,6 +38,7 @@ const useStyles = makeStyles({
   },
 });
 
+
 function Restaurant(props) {
   const classes = useStyles();
   const { loading } = useSelector((state) => state.data);
@@ -46,6 +51,31 @@ function Restaurant(props) {
     payment,
     address,
   } = props;
+  const { inputs, handleInputChange, handleSubmit } = useForm(
+    {
+      name: "",
+      email: "",
+      tags: "",
+      costForOne: "",
+      minOrderAmount: "",
+      street: "",
+      aptName: "",
+      locality: "",
+      zip: "",
+      phoneNo: "",
+      payment: "",
+      password: "",
+      confirmPassword: "",
+    },
+    signupSellerHandle
+  );
+
+  const openEdit = () => {
+    inputs.name = name;
+    setOpen(true);
+  };
+
+
   let paymentString;
   let phoneNo;
   let addressString;
@@ -61,6 +91,8 @@ function Restaurant(props) {
   if (payment ? payment.length === 2 : null)
     paymentString = `Accepts ${payment[0].toLowerCase()} & ${payment[1].toLowerCase()} payments`;
 
+
+    
   return (
     <>
       {loading ? (
@@ -76,7 +108,12 @@ function Restaurant(props) {
                 component="h2"
                 style={{ fontStyle: "bold" }}
               >
-                {name}
+                {name} 
+                <span>
+                  <MyButton tip="Edit" onClick={openEdit}>
+                    <EditIcon style={{ color: "green" }} />
+                  </MyButton>
+                </span>
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
                 {tags}
