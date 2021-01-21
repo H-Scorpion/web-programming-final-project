@@ -4,6 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "cd backend && node app.js"
+    "start": "cd backend && yarn start"
   }
 }
