@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 //redux
-import { useSelector } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 
 //material-ui
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -13,6 +13,11 @@ import SwipeableImages from "./SwipeableImages";
 //edit Restaurant info
 import MyButton from "../util/MyButton";
 import EditIcon from "@material-ui/icons/Edit";
+import useForm from "../hooks/forms";
+import { signupSeller } from "../redux/actions/authActions";
+import { useHistory } from "react-router";
+import ItemDialog from "../components/RestaurantInfoDialog";
+
 
 const useStyles = makeStyles({
   borderBottom: {
@@ -41,6 +46,11 @@ const useStyles = makeStyles({
 
 function Restaurant(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const history = useHistory();
+  const [image, setImage] = useState(null);
+  const [images, setImages] = useState({});  
   const { loading } = useSelector((state) => state.data);
   const {
     name,
@@ -51,6 +61,36 @@ function Restaurant(props) {
     payment,
     address,
   } = props;
+
+  const handleClose = () => {
+    inputs.title = "";
+    inputs.description = "";
+    inputs.price = "";
+    setImage(null);
+    setOpen(false);
+  };
+  const editSellerHandle = (props) => {
+    const formData = new FormData();
+    for (let i = 0; i < images.length; i++) {
+      formData.append("images", images[i]);
+    }
+    formData.append("name", inputs.name);
+    formData.append("email", inputs.email);
+    formData.append("tags", inputs.tags);
+    formData.append("costForOne", inputs.costForOne);
+    formData.append("minOrderAmount", inputs.minOrderAmount);
+    formData.append("street", inputs.street);
+    formData.append("aptName", inputs.aptName);
+    formData.append("locality", inputs.locality);
+    formData.append("zip", inputs.zip);
+    formData.append("phoneNo", inputs.phoneNo);
+    formData.append("password", inputs.password);
+    formData.append("confirmPassword", inputs.confirmPassword);
+    formData.append("payment", inputs.payment);
+    formData.append("role", "ROLE_SELLER");
+    dispatch(signupSeller(formData, history));
+  };
+
   const { inputs, handleInputChange, handleSubmit } = useForm(
     {
       name: "",
@@ -67,14 +107,21 @@ function Restaurant(props) {
       password: "",
       confirmPassword: "",
     },
-    signupSellerHandle
+    editSellerHandle
   );
 
   const openEdit = () => {
     inputs.name = name;
+    inputs.costForOne = costForOne;
+    inputs.minOrderAmount = minOrderAmount;
+    inputs.payment = payment;
+    inputs.address = address;
     setOpen(true);
   };
 
+  const handleFileSelect = (event) => {
+    setImages(event.target.files);
+  };
 
   let paymentString;
   let phoneNo;
@@ -147,7 +194,16 @@ function Restaurant(props) {
             <div className={classes.borderBottom}></div>
             <Grid item xs={false} sm={1} />
           </Grid>
+          <ItemDialog
+            open={open}
+            handleClose={handleClose}
+            handleSubmit={handleSubmit}
+            handleFileSelect={handleFileSelect}
+            inputs={inputs}
+            handleInputChange={handleInputChange}
+          />
         </>
+        
       )}
     </>
   );

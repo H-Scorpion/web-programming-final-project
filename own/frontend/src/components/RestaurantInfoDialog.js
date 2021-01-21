@@ -60,25 +60,38 @@ export default function SellerEditInfo(props) {
       <DialogContent>
         <form>
           <TextField
-            name="title"
-            label="Title"
-            placeholder="Name of your Item"
-            className={classes.textField}
-            value={inputs.title}
-            onChange={handleInputChange}
-            helperText={titleError}
-            error={titleError ? true : false}
-            fullWidth
-          />
-          <TextField
             name="name"
             label="Restaurant Name"
             placeholder="Your restaurant name"
             className={classes.textField}  
             value={inputs.name}          
             onChange={handleInputChange}            
-            helperText={nameError}
-            error={nameError ? true : false}
+            // helperText={nameError}
+            // error={nameError ? true : false}
+            fullWidth
+            required
+          />
+          <TextField
+            name="costForOne"
+            label="CostForOne"
+            placeholder="Your costForOne"
+            className={classes.textField}  
+            value={inputs.costForOne}          
+            onChange={handleInputChange}            
+            // helperText={nameError}
+            // error={nameError ? true : false}
+            fullWidth
+            required
+          />
+          <TextField
+            name="minOrderAmount"
+            label="MinOrderAmount"
+            placeholder="Your minOrderAmount"
+            className={classes.textField}  
+            value={inputs.minOrderAmount}          
+            onChange={handleInputChange}            
+            // helperText={nameError}
+            // error={nameError ? true : false}
             fullWidth
             required
           />
