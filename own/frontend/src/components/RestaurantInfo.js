@@ -16,7 +16,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import useForm from "../hooks/forms";
 import { signupSeller } from "../redux/actions/authActions";
 import { useHistory } from "react-router";
-import ItemDialog from "../components/RestaurantInfoDialog";
+import RestaurantInfoDialog from "../components/RestaurantInfoDialog";
 
 
 const useStyles = makeStyles({
@@ -191,10 +191,10 @@ function Restaurant(props) {
               ) : null}
             </Grid>
             <div className={classes.borderLeft}></div>
-            <div className={classes.borderBottom}></div>
+            {/* <div className={classes.borderBottom}></div> */} 
             <Grid item xs={false} sm={1} />
           </Grid>
-          <ItemDialog
+          <RestaurantInfoDialog
             open={open}
             handleClose={handleClose}
             handleSubmit={handleSubmit}
